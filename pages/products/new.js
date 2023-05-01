@@ -1,9 +1,11 @@
 import Layout from '@/components/Layout';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 const NewProduct = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -12,6 +14,7 @@ const NewProduct = () => {
   } = useForm();
   const onSubmit = async (data) => {
     await axios.post('/api/products', data);
+    router.push('/products');
   };
   const watchAllFields = watch();
   console.log(watchAllFields);
@@ -20,11 +23,7 @@ const NewProduct = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1>New Product</h1>
         <label>Product name</label>
-        <input
-          {...register('productName')}
-          type="text"
-          placeholder="product name"
-        />
+        <input {...register('title')} type="text" placeholder="product name" />
         <label>Description</label>
         <textarea
           {...register('description')}

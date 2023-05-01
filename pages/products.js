@@ -1,8 +1,17 @@
 import Layout from '@/components/Layout';
+import ProductCart from '@/components/ProductCart';
+import axios from 'axios';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/products').then((responese) => {
+      setProducts(responese.data);
+    });
+  }, []);
   return (
     <Layout>
       <Link
@@ -11,6 +20,12 @@ const Products = () => {
       >
         Add New Product
       </Link>
+      <div className="flex flex-col gap-2 mt-6">
+        <h1>Product name</h1>
+        {products.map((product) => (
+          <ProductCart key={product.id} data={product} />
+        ))}
+      </div>
     </Layout>
   );
 };
