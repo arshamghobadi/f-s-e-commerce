@@ -8,6 +8,8 @@ export default function ProductForm() {
   const router = useRouter();
   const pathName = usePathname();
   const idElement = pathName.split('/').pop();
+  console.log(idElement);
+  console.log(pathName);
 
   const {
     register,
@@ -19,7 +21,7 @@ export default function ProductForm() {
       const response = await axios.get('/api/products');
       const { data } = response;
       const idFinder = data.find((item) => item._id === idElement);
-      console.log(idFinder);
+
       return {
         title: idFinder?.title || '',
         description: idFinder?.description || '',
@@ -28,11 +30,15 @@ export default function ProductForm() {
     },
   });
   const onSubmit = async (data) => {
-    await axios.post('/api/products', data);
-    router.push('/products');
+    if (pathName.includes('edit')) {
+      await axios.put('/api/products', { ...data, idElement });
+      router.push('/products');
+    } else {
+      await axios.post('/api/products', data);
+      router.push('/products');
+    }
   };
-  const watchAllFields = watch();
-  console.log(watchAllFields);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Product name</label>

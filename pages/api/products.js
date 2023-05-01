@@ -1,5 +1,6 @@
 import { mongooseConnect } from '@/lib/moongose';
 import { Product } from '@/models/product';
+import { _id } from '@next-auth/mongodb-adapter';
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -19,5 +20,10 @@ export default async function handler(req, res) {
       price,
     });
     res.json(productDoc);
+  }
+  if (method === 'PUT') {
+    const { title, description, price, idElement } = req.body;
+    await Product.updateOne({ _id: idElement }, { title, description, price });
+    res.json(true);
   }
 }
