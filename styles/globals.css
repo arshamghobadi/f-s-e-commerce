@@ -25,3 +25,6 @@ label {
 .btn-primary {
   @apply bg-blue-900 text-white px-4 py-1 rounded-md;
 }
+.btn-primary-delete {
+  @apply bg-red-700 text-white px-4 py-1 rounded-md;
+}

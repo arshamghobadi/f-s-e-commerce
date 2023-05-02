@@ -23,7 +23,9 @@ const Products = () => {
       <div className="flex flex-col gap-2 mt-6">
         <h1>Product name</h1>
         {products.map((product) => (
-          <ProductCart key={product.id} data={product} />
+          <div key={product._id}>
+            <ProductCart data={product} />
+          </div>
         ))}
       </div>
     </Layout>

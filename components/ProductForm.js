@@ -1,15 +1,13 @@
-import Layout from '@/components/Layout';
 import axios from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 export default function ProductForm() {
   const router = useRouter();
   const pathName = usePathname();
   const idElement = pathName.split('/').pop();
-  console.log(idElement);
-  console.log(pathName);
 
   const {
     register,
@@ -31,10 +29,24 @@ export default function ProductForm() {
   });
   const onSubmit = async (data) => {
     if (pathName.includes('edit')) {
-      await axios.put('/api/products', { ...data, idElement });
+      await axios
+        .put('/api/products', { ...data, idElement })
+        .then(() => {
+          toast.success('Product Updated');
+        })
+        .catch((errors) => {
+          toast.error('somthing went wrong');
+        });
       router.push('/products');
     } else {
-      await axios.post('/api/products', data);
+      await axios
+        .post('/api/products', data)
+        .then(() => {
+          toast.success('Product Created');
+        })
+        .catch((errors) => {
+          toast.error('somthing went wrong');
+        });
       router.push('/products');
     }
   };
